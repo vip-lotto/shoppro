@@ -1,0 +1,156 @@
+.info-page{
+min-height:100vh;
+background:#24195d;
+padding:20px;
+}
+
+.info-card{
+max-width:550px;
+margin:auto;
+background:white;
+border-radius:30px;
+padding:25px;
+}
+
+.info-card h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+.info-card h3{
+margin-top:20px;
+margin-bottom:15px;
+font-size:22px;
+}
+
+.info-card input,
+.info-card textarea,
+.info-card select{
+width:100%;
+padding:15px;
+border:1px solid #ddd;
+border-radius:15px;
+margin-bottom:15px;
+font-size:15px;
+box-sizing:border-box;
+}
+
+.info-card textarea{
+min-height:100px;
+resize:none;
+}
+
+.save-btn{
+width:100%;
+height:55px;
+border:none;
+border-radius:15px;
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+
+background:linear-gradient(
+90deg,
+#4f46e5,
+#7c3aed
+);
+}
+
+.back-btn{
+border:none;
+background:white;
+padding:10px 20px;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:20px;
+}
+
+.popup-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.popup-box{
+width:350px;
+background:white;
+border-radius:25px;
+padding:30px;
+text-align:center;
+}
+
+.popup-icon{
+font-size:70px;
+}
+
+.popup-btn{
+width:100%;
+height:50px;
+border:none;
+border-radius:15px;
+margin-top:15px;
+background:#ff3366;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.input-group{
+margin-bottom:15px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+font-weight:700;
+color:#4f46e5;
+}
+
+.custom-select,
+.custom-input{
+width:100%;
+height:55px;
+border:1px solid #ddd;
+border-radius:16px;
+padding:0 15px;
+font-size:15px;
+background:#fff;
+outline:none;
+box-sizing:border-box;
+}
+
+.custom-select:focus,
+.custom-input:focus,
+.info-card input:focus,
+.info-card textarea:focus{
+border-color:#7c3aed;
+box-shadow:
+0 0 0 4px
+rgba(124,58,237,.12);
+}
+
+.bank-select{
+width:100%;
+height:55px;
+border:1px solid #ddd;
+border-radius:16px;
+padding:0 15px;
+margin-bottom:15px;
+font-size:15px;
+background:#fff;
+outline:none;
+}
+
+.bank-select:focus{
+border-color:#7c3aed;
+box-shadow:
+0 0 0 4px
+rgba(124,58,237,.12);
+}

@@ -1,0 +1,33 @@
+.add-product-page{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.add-product-page input{
+  height:50px;
+
+  border:none;
+  border-radius:12px;
+
+  padding:0 15px;
+
+  background:#fff;
+}
+
+.add-product-page button{
+  height:55px;
+
+  border:none;
+  border-radius:14px;
+
+  background:#ff3366;
+  color:white;
+
+  font-size:18px;
+  font-weight:bold;
+}

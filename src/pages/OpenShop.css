@@ -1,0 +1,178 @@
+.open-shop-page{
+  min-height:100vh;
+  background:#f5f6fa;
+  padding:20px;
+}
+
+.shop-card{
+  max-width:700px;
+  margin:auto;
+
+  background:white;
+
+  border-radius:20px;
+
+  padding:25px;
+
+  box-shadow:
+  0 10px 25px rgba(0,0,0,.08);
+}
+
+.shop-logo{
+  width:140px;
+  height:140px;
+
+  margin:0 auto 20px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.shop-logo img{
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+}
+.shop-card h1{
+  text-align:center;
+  margin-top:20px;
+}
+
+.shop-card p{
+  text-align:center;
+  color:#666;
+}
+
+.section-title{
+  margin-top:25px;
+  margin-bottom:15px;
+
+  font-size:20px;
+  font-weight:700;
+
+  border-bottom:
+  2px solid #eee;
+
+  padding-bottom:8px;
+}
+
+.shop-card input{
+  width:100%;
+
+  padding:14px;
+
+  border:1px solid #ddd;
+
+  border-radius:12px;
+
+  margin-bottom:15px;
+
+  font-size:15px;
+
+  box-sizing:border-box;
+}
+
+.row{
+  display:grid;
+
+  grid-template-columns:
+  1fr 1fr;
+
+  gap:10px;
+}
+
+.upload-box{
+  margin-bottom:20px;
+}
+
+.upload-box label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+.open-shop-btn{
+  width:100%;
+
+  height:55px;
+
+  border:none;
+
+  border-radius:15px;
+
+  background:#ff3366;
+
+  color:white;
+
+  font-size:18px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+}
+.popup-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+
+  width:100%;
+  height:100%;
+
+  background:rgba(0,0,0,.5);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  z-index:99999;
+}
+
+.popup-box{
+  width:90%;
+  max-width:400px;
+
+  background:#fff;
+
+  border-radius:25px;
+
+  padding:30px;
+
+  text-align:center;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.2);
+}
+
+.popup-icon{
+  font-size:70px;
+}
+
+.popup-box h2{
+  margin-top:15px;
+}
+
+.popup-box p{
+  color:#666;
+  line-height:1.7;
+}
+
+.popup-box button{
+  width:100%;
+  height:50px;
+
+  border:none;
+
+  background:#ff3366;
+  color:white;
+
+  border-radius:15px;
+
+  font-size:16px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  margin-top:15px;
+}
