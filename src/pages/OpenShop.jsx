@@ -303,7 +303,7 @@ const {
         />
 
         <div className="upload-box">
-  <label>📇 บัตรประชาชนด้านหน้า</label>
+  
 
   <label className="upload-card">
     <input
@@ -316,20 +316,22 @@ const {
     />
 
     <div>
-      📸 กดเพื่อเลือกภาพบัตรด้านหน้า
-      <br />
+  📇 บัตรประชาชนด้านหน้า
+  <br />
 
-      <small>
-        {idFront
-          ? idFront.name
-          : "รองรับ JPG / PNG"}
-      </small>
-    </div>
+  <small>
+    {idFront
+      ? idFront.name
+      : "📸 กดเพื่อเลือกภาพ"}
+  </small>
+</div>
+
+
   </label>
 </div>
 
 <div className="upload-box">
-  <label>📇 บัตรประชาชนด้านหลัง</label>
+ 
 
   <label className="upload-card">
     <input
@@ -342,15 +344,15 @@ const {
     />
 
     <div>
-      📸 กดเพื่อเลือกภาพบัตรด้านหลัง
-      <br />
+  📇 บัตรประชาชนด้านหลัง
+  <br />
 
-      <small>
-        {idBack
-          ? idBack.name
-          : "รองรับ JPG / PNG"}
-      </small>
-    </div>
+  <small>
+    {idBack
+      ? idBack.name
+      : "📸 กดเพื่อเลือกภาพ"}
+  </small>
+</div>
   </label>
 </div>
 
