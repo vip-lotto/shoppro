@@ -35,11 +35,11 @@ export default function Products() {
 
   const loadProducts = async () => {
   const { data } = await supabase
-    .from("product_shop_view")
-    .select("*")
-    .order("created_at", {
-      ascending: false,
-    });
+  .from("products")
+  .select("*")
+  .order("created_at", {
+    ascending: false,
+  });
 
   setProducts(data || []);
 };
