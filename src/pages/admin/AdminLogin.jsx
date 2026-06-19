@@ -27,7 +27,9 @@ export default function AdminLogin() {
   const { data, error } =
   await supabase
     .from("admins")
-    .select("*");
+    .select("*")
+    .eq("username", username)
+    .eq("password", password);
 
 console.log("DATA =", data);
 console.log("ERROR =", error);
