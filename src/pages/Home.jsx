@@ -16,8 +16,11 @@ export default function Home() {
   const [current, setCurrent] = useState(0);
   const [showCategory, setShowCategory] = useState(false);
   const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] =
+  useState("");
   const [products, setProducts] = useState([]);
   const [popup, setPopup] = useState(null);
+
 
   const loadProducts = async () => {
     const { data, error } = await supabase
@@ -116,19 +119,67 @@ useEffect(() => {
           }
         />
 
+        {selectedCategory && (
+  <div
+    style={{
+      marginTop: "10px",
+      fontWeight: "bold",
+      color: "#ff3366",
+    }}
+  >
+    หมวด : {selectedCategory}
+  </div>
+)}
+
       </div>
 
       {showCategory && (
         <div className="category-menu">
-          <div>📷 กล้องถ่ายรูป</div>
-          <div>⌚ นาฬิกา</div>
-          <div>💍 เครื่องประดับ</div>
-          <div>🏠 เครื่องใช้ไฟฟ้า</div>
-          <div>👗 แฟชั่นผู้หญิง</div>
-          <div>👜 กระเป๋าผู้หญิง</div>
-          <div>💄 ความงาม</div>
-          <div>👟 รองเท้า</div>
-          <div>💻 อิเล็กทรอนิกส์</div>
+          <div onClick={() => setSelectedCategory("")}>
+  🔥 ทั้งหมด
+</div>
+
+<div onClick={() => setSelectedCategory("เครื่องใช้ไฟฟ้า")}>
+  🏠 เครื่องใช้ไฟฟ้า
+</div>
+
+<div onClick={() => setSelectedCategory("เครื่องประดับ")}>
+  💍 เครื่องประดับ
+</div>
+
+<div onClick={() => setSelectedCategory("กล้องถ่ายรูป")}>
+  📷 กล้องถ่ายรูป
+</div>
+
+<div onClick={() => setSelectedCategory("เครื่องครัว")}>
+  🍳 เครื่องครัว
+</div>
+
+<div onClick={() => setSelectedCategory("อิเล็กทรอนิกส์")}>
+  💻 อิเล็กทรอนิกส์
+</div>
+
+<div onClick={() => setSelectedCategory("แคมปิ้ง")}>
+  🏕️ แคมปิ้ง
+</div>
+
+<div onClick={() => setSelectedCategory("เฟอร์นิเจอร์")}>
+  🪑 เฟอร์นิเจอร์
+</div>
+
+<div onClick={() => setSelectedCategory("รถยนต์และอะไหล่")}>
+  🚗 รถยนต์และอะไหล่
+</div>
+
+<div onClick={() => setSelectedCategory("อุปกรณ์ก่อสร้าง")}>
+  🔧 อุปกรณ์ก่อสร้าง
+</div>
+
+<div onClick={() => setSelectedCategory("เสื้อผ้าแฟชั่น")}>
+  👕 เสื้อผ้าแฟชั่น
+</div>
+
+
         </div>
       )}
 
@@ -160,19 +211,21 @@ useEffect(() => {
       <div className="product-grid">
 
         {products
-          .filter(
-            (item) =>
-              (item.name || "")
-                .toLowerCase()
-                .includes(
-                  search.toLowerCase()
-                ) ||
-              (item.shop_name || "")
-                .toLowerCase()
-                .includes(
-                  search.toLowerCase()
-                )
-          )
+          .filter((item) => {
+  const matchSearch =
+    (item.name || "")
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+    (item.shop_name || "")
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+  const matchCategory =
+    !selectedCategory ||
+    item.category === selectedCategory;
+
+  return matchSearch && matchCategory;
+})
           .map((item) => (
             <div
               key={item.id}
