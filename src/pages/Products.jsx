@@ -16,16 +16,17 @@ export default function Products() {
   
 
   const categories = [
-    "กล้องถ่ายรูป",
-    "นาฬิกา",
-    "เครื่องประดับ",
-    "เครื่องใช้ไฟฟ้า",
-    "แฟชั่นผู้หญิง",
-    "กระเป๋าผู้หญิง",
-    "ความงาม",
-    "รองเท้า",
-    "อิเล็กทรอนิกส์",
-  ];
+  "เครื่องใช้ไฟฟ้า",
+  "เครื่องประดับ",
+  "กล้องถ่ายรูป",
+  "เครื่องครัว",
+  "อิเล็กทรอนิกส์",
+  "แคมปิ้ง",
+  "เฟอร์นิเจอร์",
+  "รถยนต์และอะไหล่",
+  "อุปกรณ์ก่อสร้าง",
+  "เสื้อผ้าแฟชั่น",
+];
 
   useEffect(() => {
     loadProducts();
@@ -33,15 +34,15 @@ export default function Products() {
   }, []);
 
   const loadProducts = async () => {
-    const { data } = await supabase
-      .from("products")
-      .select("*")
-      .order("created_at", {
-        ascending: false,
-      });
+  const { data } = await supabase
+    .from("product_shop_view")
+    .select("*")
+    .order("created_at", {
+      ascending: false,
+    });
 
-    setProducts(data || []);
-  };
+  setProducts(data || []);
+};
 
   const loadShop = async () => {
     const user = JSON.parse(
@@ -160,9 +161,17 @@ export default function Products() {
   const filteredProducts = products.filter(
     (item) => {
       const matchSearch =
-        item.name
-          ?.toLowerCase()
-          .includes(search.toLowerCase());
+  (item.name || "")
+    .toLowerCase()
+    .includes(search.toLowerCase()) ||
+
+  (item.category || "")
+    .toLowerCase()
+    .includes(search.toLowerCase()) ||
+
+  (item.shop_name || "")
+    .toLowerCase()
+    .includes(search.toLowerCase());
 
       const matchCategory =
         selectedCategory === ""
@@ -227,33 +236,50 @@ export default function Products() {
         />
       </div>
 
-      {showCategory && (
-        <div className="category-menu">
-          <div
-            className="category-item"
-            onClick={() => {
-              setSelectedCategory("");
-              setShowCategory(false);
-            }}
-          >
-            ทั้งหมด
-          </div>
+      
 
-          {categories.map((cat) => (
-            <div
-              key={cat}
-              className="category-item"
-              onClick={() => {
-                setSelectedCategory(cat);
-                setShowCategory(false);
-              }}
-            >
-              {cat}
-            </div>
-          ))}
-        </div>
-      )}
+{selectedCategory && (
+  <div
+    style={{
+      marginBottom: "15px",
+      fontWeight: "bold",
+      color: "#ff3366",
+    }}
+  >
+    หมวด : {selectedCategory}
+  </div>
+)}
 
+{showCategory && (
+  <div className="category-menu">
+
+    
+
+    <div
+      className="category-item"
+      onClick={() => {
+        setSelectedCategory("");
+        setShowCategory(false);
+      }}
+    >
+      🔥 ทั้งหมด
+    </div>
+
+    {categories.map((cat) => (
+      <div
+        key={cat}
+        className="category-item"
+        onClick={() => {
+          setSelectedCategory(cat);
+          setShowCategory(false);
+        }}
+      >
+        {cat}
+      </div>
+    ))}
+
+  </div>
+)}
       <h2>สินค้าทั้งหมด</h2>
 
       <div className="product-grid">
@@ -271,6 +297,26 @@ export default function Products() {
               <h4>{item.name}</h4>
 
               <p>{item.category}</p>
+
+              
+
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#666",
+                }}
+              >
+                🏪 {item.shop_name}
+              </p>
+
+              <p
+                style={{
+                  color: "#f59e0b",
+                  fontSize: "13px",
+                }}
+              >
+                ⭐ {item.shop_star}
+              </p>
 
               <p className="price">
                 ฿
