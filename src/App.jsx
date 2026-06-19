@@ -74,11 +74,7 @@ function App() {
       {/* เปิดเว็บครั้งแรก */}
       <Route
         path="/"
-        element={
-          user
-            ? <Navigate to="/home" />
-            : <Navigate to="/login" />
-        }
+        element={<Navigate to="/login" />}
       />
 
       {/* Login */}
