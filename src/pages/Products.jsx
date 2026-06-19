@@ -45,22 +45,28 @@ export default function Products() {
 };
 
   const loadShop = async () => {
-    const user = JSON.parse(
-      localStorage.getItem("user")
-    );
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
 
-    if (!user) return;
+  if (!user) {
+    setShopStatus(null);
+    return;
+  }
 
-    const { data } = await supabase
-      .from("shops")
-      .select("status")
-      .eq("user_id", user.id)
-      .single();
+  const { data, error } = await supabase
+    .from("shops")
+    .select("status")
+    .eq("user_id", user.id)
+    .maybeSingle();
 
-    if (data) {
-      setShopStatus(data.status);
-    }
-  };
+  if (error || !data) {
+    setShopStatus(null);
+    return;
+  }
+
+  setShopStatus(data.status);
+};
 
   const addToShop = async (productId) => {
     try {
@@ -327,7 +333,7 @@ export default function Products() {
 
               <button
                 disabled={
-                  shopStatus !== "approved"
+                  shopStatus === "pending"
                 }
                 onClick={() =>
                   addToShop(item.id)
@@ -352,10 +358,13 @@ export default function Products() {
                       : "not-allowed",
                 }}
               >
-                {shopStatus ===
-                "approved"
-                  ? "เพิ่มเข้าร้าน"
-                  : "รออนุมัติร้าน"}
+                {
+  shopStatus === "approved"
+    ? "เพิ่มเข้าร้าน"
+    : shopStatus === "pending"
+    ? "รออนุมัติร้าน"
+    : "เปิดร้านก่อน"
+}
               </button>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../services/supabase";
 import "./OpenShop.css";
+import { useNavigate } from "react-router-dom";
 
 export default function OpenShop() {
   const [shopName, setShopName] = useState("");
@@ -15,6 +16,8 @@ export default function OpenShop() {
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] =
   useState(false);
+  const navigate = useNavigate();
+
 
   const handleSubmit = async () => {
     try {
@@ -185,7 +188,41 @@ const {
 
       <div className="shop-card">
 
-        <div className="shop-logo">
+  <div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    marginBottom: "20px",
+  }}
+>
+  <button
+    onClick={() => navigate(-1)}
+    style={{
+      border: "none",
+      background: "#f3f4f6",
+      width: "40px",
+      height: "40px",
+      borderRadius: "50%",
+      fontSize: "22px",
+      cursor: "pointer",
+      fontWeight: "bold",
+    }}
+  >
+    ←
+  </button>
+
+  <span
+    style={{
+      fontWeight: "bold",
+      fontSize: "18px",
+    }}
+  >
+    ย้อนกลับ
+  </span>
+</div>
+
+  <div className="shop-logo">
           <img
             src="/SHOPPRO.png"
             alt="SHOPPRO"
@@ -266,40 +303,56 @@ const {
         />
 
         <div className="upload-box">
+  <label>📇 บัตรประชาชนด้านหน้า</label>
 
-          <label>
-            รูปบัตรประชาชนด้านหน้า
-          </label>
+  <label className="upload-card">
+    <input
+      type="file"
+      accept="image/*"
+      style={{ display: "none" }}
+      onChange={(e) =>
+        setIdFront(e.target.files[0])
+      }
+    />
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) =>
-              setIdFront(
-                e.target.files[0]
-              )
-            }
-          />
+    <div>
+      📸 กดเพื่อเลือกภาพบัตรด้านหน้า
+      <br />
 
-        </div>
+      <small>
+        {idFront
+          ? idFront.name
+          : "รองรับ JPG / PNG"}
+      </small>
+    </div>
+  </label>
+</div>
 
-        <div className="upload-box">
+<div className="upload-box">
+  <label>📇 บัตรประชาชนด้านหลัง</label>
 
-          <label>
-            รูปบัตรประชาชนด้านหลัง
-          </label>
+  <label className="upload-card">
+    <input
+      type="file"
+      accept="image/*"
+      style={{ display: "none" }}
+      onChange={(e) =>
+        setIdBack(e.target.files[0])
+      }
+    />
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) =>
-              setIdBack(
-                e.target.files[0]
-              )
-            }
-          />
+    <div>
+      📸 กดเพื่อเลือกภาพบัตรด้านหลัง
+      <br />
 
-        </div>
+      <small>
+        {idBack
+          ? idBack.name
+          : "รองรับ JPG / PNG"}
+      </small>
+    </div>
+  </label>
+</div>
 
         <button
           className="open-shop-btn"
