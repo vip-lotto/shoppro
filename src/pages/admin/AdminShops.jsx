@@ -48,17 +48,17 @@ export default function AdminShops() {
     loadShops();
   }
 
-  async function suspendShop(id) {
+  async function rejectShop(id) {
 
-    await supabase
-      .from("shops")
-      .update({
-        status: "suspended"
-      })
-      .eq("id", id);
+  await supabase
+    .from("shops")
+    .update({
+      status: "rejected"
+    })
+    .eq("id", id);
 
-    loadShops();
-  }
+  loadShops();
+}
 
   async function approveShop(id) {
 
@@ -250,9 +250,10 @@ export default function AdminShops() {
                     <span
                       style={{
                         background:
-                          shop.status ===
-                          "approved"
+                          shop.status === "approved"
                             ? "#22c55e"
+                            : shop.status === "pending"
+                            ? "#f59e0b"
                             : "#ef4444",
                         color:
                           "#fff",
@@ -308,8 +309,8 @@ export default function AdminShops() {
                         />
                       </button>
 
-                      {shop.status ===
-                      "suspended" ? (
+                      {shop.status !==
+                      "approved" ? (
 
                         <button
                           onClick={() =>
@@ -343,9 +344,7 @@ export default function AdminShops() {
 
                         <button
                           onClick={() =>
-                            suspendShop(
-                              shop.id
-                            )
+                            rejectShop(shop.id)
                           }
                           style={{
                             background:
