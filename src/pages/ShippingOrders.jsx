@@ -281,7 +281,10 @@ loadOrders();
 </div>
 
 <button
-  onClick={() => completeOrder(order)}
+  onClick={() => {
+    alert("BUTTON CLICK");
+    completeOrder(order);
+  }}
   style={{
     width: "100%",
     marginTop: 15,
