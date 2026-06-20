@@ -47,11 +47,16 @@ console.log("ERROR =", error);
   }
 
   localStorage.setItem(
-    "admin",
-    JSON.stringify(data[0])
-  );
+  "admin",
+  JSON.stringify(data[0])
+);
 
-  window.location.href = "/admin";
+console.log(
+  "ADMIN SAVED",
+  localStorage.getItem("admin")
+);
+
+window.location.href = "/admin";
 }
 
   return (
