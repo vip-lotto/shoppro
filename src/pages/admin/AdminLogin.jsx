@@ -51,7 +51,7 @@ console.log("ERROR =", error);
     JSON.stringify(data[0])
   );
 
-  navigate("/admin");
+  window.location.href = "/admin";
 }
 
   return (
