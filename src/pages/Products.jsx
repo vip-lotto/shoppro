@@ -56,16 +56,21 @@ export default function Products() {
 
   const { data, error } = await supabase
     .from("shops")
-    .select("status")
+    .select("*")
     .eq("user_id", user.id)
-    .maybeSingle();
+    .order("created_at", {
+      ascending: false,
+    })
+    .limit(1);
 
-  if (error || !data) {
+  console.log("SHOP DATA =", data);
+
+  if (error || !data?.length) {
     setShopStatus(null);
     return;
   }
 
-  setShopStatus(data.status);
+  setShopStatus(data[0].status);
 };
 
   const addToShop = async (productId) => {
@@ -84,62 +89,85 @@ export default function Products() {
       }
 
       const {
-        data: shop,
-        error: shopError,
-      } = await supabase
-        .from("shops")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
+  data: shop,
+  error: shopError,
+} = await supabase
+  .from("shops")
+  .select("*")
+  .eq("user_id", user.id)
+  .order("created_at", {
+    ascending: false,
+  })
+  .limit(1);
 
-      if (shopError || !shop) {
-        setPopup({
-  type: "error",
-  title: "แจ้งเตือน",
-  message: "กรุณาเปิดร้านค้าก่อน",
-});
-        window.location.href =
-          "/open-shop";
-        return;
-      }
+if (shopError || !shop?.length) {
+  setPopup({
+    type: "error",
+    title: "แจ้งเตือน",
+    message: "กรุณาเปิดร้านค้าก่อน",
+  });
 
-      if (shop.status !== "approved") {
-        setPopup({
-  type: "error",
-  title: "แจ้งเตือน",
-  message:
-    "ร้านของคุณกำลังรออนุมัติจากแอดมิน",
-});
-        return;
-      }
+  window.location.href = "/open-shop";
+  return;
+}
 
-      const { data: exist } =
-        await supabase
-          .from("shop_products")
-          .select("*")
-          .eq("shop_id", shop.id)
-          .eq("product_id", productId)
-          .maybeSingle();
+const currentShop = shop[0];
+console.log("CURRENT SHOP =", currentShop);
+console.log(
+  "CURRENT STATUS =",
+  "[" + currentShop.status + "]"
+);
+console.log("PRODUCT ID =", productId);
+console.log("AAAAAAAAAA");
 
-      if (exist) {
-        setPopup({
-  type: "error",
-  title: "แจ้งเตือน",
-  message: "สินค้านี้อยู่ในร้านแล้ว",
-});
-        return;
-      }
+if (currentShop.status !== "approved") {
+  setPopup({
+    type: "error",
+    title: "แจ้งเตือน",
+    message:
+      "ร้านของคุณกำลังรออนุมัติจากแอดมิน",
+  });
 
-      const { error } = await supabase
-        .from("shop_products")
-        .insert([
-          {
-            shop_id: shop.id,
-            product_id: productId,
-          },
-        ]);
+  return;
+}
+
+const { data: exist } = await supabase
+  .from("shop_products")
+  .select("id")
+  .eq("shop_id", currentShop.id)
+  .eq("product_id", productId)
+  .maybeSingle();
+
+if (exist) {
+  setPopup({
+    type: "error",
+    title: "แจ้งเตือน",
+    message: "สินค้านี้อยู่ในร้านแล้ว",
+  });
+
+  return;
+}
+
+console.log("STEP 3 INSERT");
+
+const { error, data } = await supabase
+  .from("shop_products")
+  .insert([
+    {
+      user_id: user.id,
+      shop_id: currentShop.id,
+      product_id: productId,
+    },
+  ])
+  .select();
+
+console.log("INSERT DATA =", data);
+console.log("INSERT ERROR =", error);
+
+console.log("STEP 4 DONE");
 
       if (error) {
+        console.log("INSERT ERROR =", error);
         setPopup({
   type: "error",
   title: "เกิดข้อผิดพลาด",
@@ -185,11 +213,16 @@ export default function Products() {
           : item.category ===
             selectedCategory;
 
+      
+
       return (
         matchSearch && matchCategory
       );
     }
   );
+
+  console.log("SHOP STATUS =", shopStatus);
+console.log("PRODUCTS PAGE");
 
   return (
     <div
@@ -363,7 +396,7 @@ export default function Products() {
     ? "เพิ่มเข้าร้าน"
     : shopStatus === "pending"
     ? "รออนุมัติร้าน"
-    : "เปิดร้านก่อน"
+    : "เปิดร้านค้า"
 }
               </button>
             </div>

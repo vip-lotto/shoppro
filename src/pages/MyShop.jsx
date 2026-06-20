@@ -29,7 +29,7 @@ const loadShopProducts = async () => {
 
 console.log("USER =", user);
 console.log("SHOP =", shopData);
-console.log("ERROR =", error);
+console.log("STATUS =", shopData?.status);
 
     if (!shopData) {
       setShop(null);
@@ -138,26 +138,24 @@ console.log("ERROR =", error);
           </p>
 
           <p>
-            สถานะ :
-            <b
-              style={{
-                color:
-                  shop.status ===
-                  "approved"
-                    ? "green"
-                    : "orange",
-              }}
-            >
-              {" "}
-              {
-  shop.status === "approved"
-    ? "อนุมัติแล้ว"
-    : shop.status === "pending"
-    ? "รออนุมัติ"
-    : "ไม่อนุมัติ"
-}
-            </b>
-          </p>
+  สถานะ :
+  <b
+    style={{
+      color:
+        shop.status?.trim() === "approved"
+          ? "green"
+          : "orange",
+    }}
+  >
+    {
+      shop.status?.trim() === "approved"
+        ? "อนุมัติแล้ว"
+        : shop.status?.trim() === "pending"
+        ? "รออนุมัติ"
+        : "ไม่อนุมัติ"
+    }
+  </b>
+</p>
 
           <p>
             จำนวนสินค้า :
