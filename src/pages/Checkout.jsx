@@ -69,12 +69,17 @@ return;
 
   // ตรวจรหัสสั่งซื้อ
   const {
-    data: codeData,
-    error: codeError,
-  } = await supabase
-    .from("profiles")
-    .select("customer_code")
-    .eq("customer_code", orderCode);
+  data: codeData,
+  error: codeError,
+} = await supabase
+  .from("order_codes")
+  .select("*")
+  .eq("code", orderCode)
+  .eq("status", "unused");
+
+  console.log("CODE DATA =", codeData);
+console.log("CODE ERROR =", codeError);
+console.log("ORDER CODE =", orderCode);
 
   if (codeError) {
   setPopup({
@@ -92,6 +97,8 @@ return;
   });
   return;
   }
+
+  
 
   // ดึงสินค้าในตะกร้า
   const user = JSON.parse(
@@ -150,35 +157,37 @@ console.log(
   orderNumber
 );
     
-      await supabase
-        .from("orders")
-        .insert([
-          {
-            order_code: orderNumber,
+      const { error: orderError } =
+  await supabase
+    .from("orders")
+    .insert([
+      {
+        order_code: orderNumber,
 
-            shop_id: item.shop_id,
-            product_id: item.product_id,
+        shop_id: item.shop_id,
+        product_id: item.product_id,
 
-            customer_name: fullName,
+        customer_name: fullName,
 
-            phone,
-            province,
-            district,
-            village,
+        phone,
+        province,
+        district,
+        village,
 
-            customer_code: orderCode,
+        customer_code: orderCode,
 
-            qty: item.qty,
+        qty: item.qty,
 
-            total_price:
-              (item.sell_price || 0) *
-              (item.qty || 1),
+        total_price:
+          (item.sell_price || 0) *
+          (item.qty || 1),
 
-            status: "pending",
-          },
-        ]);
+        status: "pending",
+      },
+    ]);
 
-    if (orderError) {
+if (orderError) {
+
       console.log(
         "ORDER ERROR =",
         orderError
@@ -191,6 +200,14 @@ console.log(
 return;
     }
   }
+
+
+  await supabase
+  .from("order_codes")
+  .update({
+    status: "used",
+  })
+  .eq("code", orderCode);
 
   // ล้างตะกร้า
   
