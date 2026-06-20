@@ -62,36 +62,41 @@ export default function ShippingOrders() {
 
   async function completeOrder(order) {
 
-  // ดึงกระเป๋าเงินร้าน
+  const { data: shop } = await supabase
+    .from("shops")
+    .select("user_id")
+    .eq("id", order.shop_id)
+    .single();
+
+  if (!shop) {
+    alert("ไม่พบเจ้าของร้าน");
+    return;
+  }
+
   const { data: wallet } = await supabase
     .from("wallets")
     .select("*")
-    .eq("user_id", order.shop_owner_id)
+    .eq("user_id", shop.user_id)
     .single();
 
   const currentBalance =
     Number(wallet?.balance || 0);
 
-  const profit =
-    Number(order.total_price || 0) -
-    Number(order.cost_price || 0);
-
-  // เพิ่มเงินเข้ากระเป๋า
   await supabase
     .from("wallets")
     .update({
       balance:
         currentBalance +
         Number(order.cost_price || 0) +
-        profit
+        Number(order.profit || 0)
     })
-    .eq("user_id", order.shop_owner_id);
+    .eq("user_id", shop.user_id);
 
-  // เปลี่ยนสถานะ
   await supabase
     .from("orders")
     .update({
-      status: "completed"
+      status: "completed",
+      owner_paid: true
     })
     .eq("id", order.id);
 
