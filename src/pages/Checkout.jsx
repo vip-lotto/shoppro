@@ -88,7 +88,7 @@ return;
     setPopup({
       title: "รหัสไม่ถูกต้อง",
       message:
-    "กรุณาติดต่อแอดมินเพื่อขอรหัสใหม่",
+    "กรุณาใส่รหัสสั่งชิ้อใหม่",
   });
   return;
   }
@@ -139,11 +139,23 @@ const {
       status: "pending",
     });
 
-    const { error: orderError } =
+    
+
+
+    const orderNumber =
+  "SP" + Date.now();
+
+console.log(
+  "ORDER NUMBER =",
+  orderNumber
+);
+    
       await supabase
         .from("orders")
         .insert([
           {
+            order_code: orderNumber,
+
             shop_id: item.shop_id,
             product_id: item.product_id,
 

@@ -54,6 +54,7 @@ import AdminKYC from "./pages/admin/AdminKYC";
 import AdminDeposits
 from "./pages/admin/AdminDeposits";
 import AdminLogin from "./pages/admin/AdminLogin";
+import AdminOrderCodes from "./pages/admin/AdminOrderCodes";
 
 
 
@@ -354,6 +355,14 @@ function App() {
   }
 />
 
+<Route
+  path="/admin/order-codes"
+  element={
+    admin
+      ? <AdminOrderCodes />
+      : <Navigate to="/admin-login" />
+  }
+/>
 
 
 

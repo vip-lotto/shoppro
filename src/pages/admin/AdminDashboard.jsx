@@ -484,6 +484,24 @@ const statLabel = {
             cursor: "pointer"
           }}
         >
+
+          <div
+  onClick={() =>
+    navigate("/admin/order-codes")
+  }
+  style={{
+    background:
+      "linear-gradient(135deg,#0ea5e9,#0284c7)",
+    color: "#fff",
+    padding: 20,
+    borderRadius: 20,
+    cursor: "pointer"
+  }}
+>
+  <h2>🔑</h2>
+  <h3>รหัสสั่งซื้อ</h3>
+  <p>สร้างรหัสให้ลูกค้า</p>
+</div>
           <h2>📊</h2>
           <h3>รายงานระบบ</h3>
           <p>สรุปยอดขายทั้งหมด</p>
