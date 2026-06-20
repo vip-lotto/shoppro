@@ -62,43 +62,91 @@ export default function ShippingOrders() {
 
   async function completeOrder(order) {
 
-  const { data: shop } = await supabase
-    .from("shops")
-    .select("user_id")
-    .eq("id", order.shop_id)
-    .single();
+  console.log("CLICK COMPLETE");
+  console.log("ORDER =", order);
+
+  const { data: shop, error: shopError } =
+    await supabase
+      .from("shops")
+      .select("user_id")
+      .eq("id", order.shop_id)
+      .single();
+
+  console.log("SHOP =", shop);
+  console.log("SHOP ERROR =", shopError);
 
   if (!shop) {
     alert("ไม่พบเจ้าของร้าน");
     return;
   }
 
-  const { data: wallet } = await supabase
-    .from("wallets")
-    .select("*")
-    .eq("user_id", shop.user_id)
-    .single();
+  const { data: wallet, error: walletSelectError } =
+    await supabase
+      .from("wallets")
+      .select("*")
+      .eq("user_id", shop.user_id)
+      .single();
+
+  console.log("WALLET =", wallet);
+  console.log(
+    "WALLET SELECT ERROR =",
+    walletSelectError
+  );
 
   const currentBalance =
     Number(wallet?.balance || 0);
 
-  await supabase
-    .from("wallets")
-    .update({
-      balance:
-        currentBalance +
-        Number(order.cost_price || 0) +
-        Number(order.profit || 0)
-    })
-    .eq("user_id", shop.user_id);
+  console.log(
+    "CURRENT BALANCE =",
+    currentBalance
+  );
 
-  await supabase
-    .from("orders")
-    .update({
-      status: "completed",
-      owner_paid: true
-    })
-    .eq("id", order.id);
+  console.log(
+    "COST PRICE =",
+    order.cost_price
+  );
+
+  console.log(
+    "PROFIT =",
+    order.profit
+  );
+
+  const newBalance =
+    currentBalance +
+    Number(order.cost_price || 0) +
+    Number(order.profit || 0);
+
+  console.log(
+    "NEW BALANCE =",
+    newBalance
+  );
+
+  const { error: walletUpdateError } =
+    await supabase
+      .from("wallets")
+      .update({
+        balance: newBalance
+      })
+      .eq("user_id", shop.user_id);
+
+  console.log(
+    "WALLET UPDATE ERROR =",
+    walletUpdateError
+  );
+
+  const { error: orderUpdateError } =
+    await supabase
+      .from("orders")
+      .update({
+        status: "completed",
+        owner_paid: true
+      })
+      .eq("id", order.id);
+
+  console.log(
+    "ORDER UPDATE ERROR =",
+    orderUpdateError
+  );
 
   loadOrders();
 }
