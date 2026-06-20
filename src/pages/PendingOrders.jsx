@@ -76,7 +76,7 @@ export default function PendingOrders() {
       Number(wallet?.balance || 0);
 
     const total =
-      Number(order.total_price || 0);
+  Number(order.cost_price || 0);
 
     if (balance < total) {
 

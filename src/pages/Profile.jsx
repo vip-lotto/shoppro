@@ -212,11 +212,11 @@ setCompletedOrders(
               <p>รหัสเชิญ : {user?.customer_code}</p>
 
               <span className="member-badge">
-                สมาชิก VVIP
+                สมาชิก ทั่วไป
               </span>
 
               <div className="rating">
-                ⭐⭐⭐⭐⭐
+                ⭐⭐
               </div>
             </div>
           </div>
