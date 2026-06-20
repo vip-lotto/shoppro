@@ -80,75 +80,61 @@ export default function ShippingOrders() {
     return;
   }
 
-  const { data: wallet, error: walletSelectError } =
-    await supabase
-      .from("wallets")
-      .select("*")
-      .eq("user_id", shop.user_id)
-      .single();
+  const { data: wallet, error: walletError } =
+  await supabase
+    .from("wallets")
+    .select("id,balance")
+    .eq("user_id", shop.user_id)
+    .single();
 
-  console.log("WALLET =", wallet);
-  console.log(
-    "WALLET SELECT ERROR =",
-    walletSelectError
-  );
+console.log("WALLET =", wallet);
+console.log("WALLET ERROR =", walletError);
 
-  const currentBalance =
-    Number(wallet?.balance || 0);
+if (!wallet) {
+  alert("ไม่พบกระเป๋าเงินร้านค้า");
+  return;
+}
 
-  console.log(
-    "CURRENT BALANCE =",
-    currentBalance
-  );
+const newBalance =
+  Number(wallet.balance || 0) +
+  Number(order.cost_price || 0) +
+  Number(order.profit || 0);
 
-  console.log(
-    "COST PRICE =",
-    order.cost_price
-  );
+console.log("NEW BALANCE =", newBalance);
 
-  console.log(
-    "PROFIT =",
-    order.profit
-  );
+const { error: updateError } =
+  await supabase
+    .from("wallets")
+    .update({
+      balance: newBalance
+    })
+    .eq("id", wallet.id);
 
-  const newBalance =
-    currentBalance +
-    Number(order.cost_price || 0) +
-    Number(order.profit || 0);
+console.log("UPDATE ERROR =", updateError);
 
-  console.log(
-    "NEW BALANCE =",
-    newBalance
-  );
+if (updateError) {
+  alert(updateError.message);
+  return;
+}
 
-  const { error: walletUpdateError } =
-    await supabase
-      .from("wallets")
-      .update({
-        balance: newBalance
-      })
-      .eq("user_id", shop.user_id);
-
-  console.log(
-    "WALLET UPDATE ERROR =",
-    walletUpdateError
-  );
+  
 
   const { error: orderUpdateError } =
-    await supabase
-      .from("orders")
-      .update({
-        status: "completed",
-        owner_paid: true
-      })
-      .eq("id", order.id);
+  await supabase
+    .from("orders")
+    .update({
+      status: "completed",
+      owner_paid: true,
+      completed_at: new Date().toISOString()
+    })
+    .eq("id", order.id);
 
-  console.log(
-    "ORDER UPDATE ERROR =",
-    orderUpdateError
-  );
+console.log(
+  "ORDER UPDATE ERROR =",
+  orderUpdateError
+);
 
-  loadOrders();
+loadOrders();
 }
 
   return (
