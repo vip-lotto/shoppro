@@ -63,7 +63,9 @@ export default function ShippingOrders() {
   async function completeOrder(order) {
 
   console.log("CLICK COMPLETE");
-  console.log("ORDER =", order);
+console.log("ORDER =", order);
+
+alert("STEP 1");
 
   const { data: shop, error: shopError } =
     await supabase
@@ -76,10 +78,10 @@ export default function ShippingOrders() {
   console.log("SHOP ERROR =", shopError);
 
   if (!shop) {
-    alert("ไม่พบเจ้าของร้าน");
-    return;
-  }
-
+  alert("STEP 2");
+  alert("ไม่พบเจ้าของร้าน");
+  return;
+}
   const { data: wallet, error: walletError } =
   await supabase
     .from("wallets")
@@ -91,16 +93,18 @@ console.log("WALLET =", wallet);
 console.log("WALLET ERROR =", walletError);
 
 if (!wallet) {
+  alert("STEP 3");
   alert("ไม่พบกระเป๋าเงินร้านค้า");
   return;
 }
-
 const newBalance =
   Number(wallet.balance || 0) +
   Number(order.cost_price || 0) +
   Number(order.profit || 0);
 
 console.log("NEW BALANCE =", newBalance);
+
+alert("STEP 4");
 
 const { error: updateError } =
   await supabase
