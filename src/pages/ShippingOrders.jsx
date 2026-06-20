@@ -60,17 +60,43 @@ export default function ShippingOrders() {
 
   }
 
-  async function completeOrder(id) {
+  async function completeOrder(order) {
 
-    await supabase
-      .from("orders")
-      .update({
-        status: "completed"
-      })
-      .eq("id", id);
+  // ดึงกระเป๋าเงินร้าน
+  const { data: wallet } = await supabase
+    .from("wallets")
+    .select("*")
+    .eq("user_id", order.shop_owner_id)
+    .single();
 
-    loadOrders();
-  }
+  const currentBalance =
+    Number(wallet?.balance || 0);
+
+  const profit =
+    Number(order.total_price || 0) -
+    Number(order.cost_price || 0);
+
+  // เพิ่มเงินเข้ากระเป๋า
+  await supabase
+    .from("wallets")
+    .update({
+      balance:
+        currentBalance +
+        Number(order.cost_price || 0) +
+        profit
+    })
+    .eq("user_id", order.shop_owner_id);
+
+  // เปลี่ยนสถานะ
+  await supabase
+    .from("orders")
+    .update({
+      status: "completed"
+    })
+    .eq("id", order.id);
+
+  loadOrders();
+}
 
   return (
     <div
@@ -214,6 +240,23 @@ export default function ShippingOrders() {
 >
   🚚 สินค้ากำลังอยู่ระหว่างการจัดส่ง
 </div>
+
+<button
+  onClick={() => completeOrder(order)}
+  style={{
+    width: "100%",
+    marginTop: 15,
+    background: "#22c55e",
+    color: "#fff",
+    border: "none",
+    padding: 14,
+    borderRadius: 12,
+    cursor: "pointer",
+    fontWeight: "bold"
+  }}
+>
+  ✅ ส่งสินค้าเสร็จสิ้น
+</button>
 
         </div>
 

@@ -157,34 +157,56 @@ console.log(
   orderNumber
 );
     
-      const { error: orderError } =
-  await supabase
-    .from("orders")
-    .insert([
-      {
-        order_code: orderNumber,
+      const totalPrice =
+  Number(item.sell_price || 0) *
+  Number(item.qty || 1);
 
-        shop_id: item.shop_id,
-        product_id: item.product_id,
+const costPrice =
+  Number(item.cost_price || 0) *
+  Number(item.qty || 1);
 
-        customer_name: fullName,
+const profit =
+  totalPrice - costPrice;
 
-        phone,
-        province,
-        district,
-        village,
+const { error: orderError } =
+await supabase
+  .from("orders")
+  .insert([
+    {
+      order_code: orderNumber,
 
-        customer_code: orderCode,
+      shop_id: item.shop_id,
+      product_id: item.product_id,
 
-        qty: item.qty,
+      customer_name: fullName,
 
-        total_price:
-          (item.sell_price || 0) *
-          (item.qty || 1),
+      phone,
+      province,
+      district,
+      village,
 
-        status: "pending",
-      },
-    ]);
+      customer_code: orderCode,
+
+      qty: item.qty,
+
+      total_price:
+        (item.sell_price || 0) *
+        (item.qty || 1),
+
+      cost_price:
+        (item.cost_price || 0) *
+        (item.qty || 1),
+
+      profit:
+        ((item.sell_price || 0) -
+         (item.cost_price || 0))
+         * (item.qty || 1),
+
+      owner_paid: false,
+
+      status: "pending",
+    },
+  ]);
 
 if (orderError) {
 

@@ -116,15 +116,26 @@ const { data: shopOrders } = await supabase
 if (shopOrders) {
 
   const sales = shopOrders
-    .filter(o => o.payment_status === "paid")
-    .reduce(
-      (sum, o) => sum + Number(o.total_price || 0),
-      0
-    );
+  .filter(o => o.status === "completed")
+  .reduce(
+    (sum, o) => sum + Number(o.total_price || 0),
+    0
+  );
 
   setTotalSales(sales);
 
-  const profit = sales * 0.1;
+  const profit = shopOrders
+  .filter(o => o.status === "completed")
+  .reduce(
+    (sum, o) =>
+      sum +
+      (
+        Number(o.total_price || 0)
+        -
+        Number(o.cost_price || 0)
+      ),
+    0
+  );
 
 setTotalProfit(profit);
 
@@ -135,11 +146,12 @@ if (wallet) {
 }
 
   const pending = shopOrders
-    .filter(o => o.owner_paid === false)
-    .reduce(
-      (sum, o) => sum + Number(o.total_price || 0),
-      0
-    );
+  .filter(o => o.owner_paid === false)
+  .reduce(
+    (sum, o) =>
+      sum + Number(o.cost_price || 0),
+    0
+  );
 
   setPendingAmount(pending);
 
