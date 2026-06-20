@@ -214,9 +214,9 @@ const statLabel = {
   style={{
     display: "grid",
     gridTemplateColumns:
-      "repeat(auto-fit,minmax(180px,1fr))",
-    gap: 15,
-    marginBottom: 30,
+      "repeat(auto-fit,minmax(280px,1fr))",
+    gap: 20,
+    alignItems: "stretch"
   }}
 >
 
@@ -357,7 +357,7 @@ const statLabel = {
         style={{
           display: "grid",
           gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
+  "repeat(2,1fr)",
           gap: 20
         }}
       >
@@ -485,29 +485,15 @@ const statLabel = {
           }}
         >
 
-          <div
-  onClick={() =>
-    navigate("/admin/order-codes")
-  }
-  style={{
-    background:
-      "linear-gradient(135deg,#0ea5e9,#0284c7)",
-    color: "#fff",
-    padding: 20,
-    borderRadius: 20,
-    cursor: "pointer"
-  }}
->
-  <h2>🔑</h2>
-  <h3>รหัสสั่งซื้อ</h3>
-  <p>สร้างรหัสให้ลูกค้า</p>
-</div>
+          
           <h2>📊</h2>
           <h3>รายงานระบบ</h3>
           <p>สรุปยอดขายทั้งหมด</p>
 
           
         </div>
+
+        
 
         <div
   onClick={() =>
@@ -525,6 +511,24 @@ const statLabel = {
   <h2>🪪</h2>
   <h3>ตรวจสอบ KYC</h3>
   <p>อนุมัติเอกสารยืนยันตัวตน</p>
+</div>
+
+<div
+  onClick={() =>
+    navigate("/admin/order-codes")
+  }
+  style={{
+    background:
+      "linear-gradient(135deg,#0ea5e9,#0284c7)",
+    color: "#fff",
+    padding: 20,
+    borderRadius: 20,
+    cursor: "pointer"
+  }}
+>
+  <h2>🔑</h2>
+  <h3>รหัสสั่งซื้อ</h3>
+  <p>สร้างรหัสให้ลูกค้า</p>
 </div>
 
 
