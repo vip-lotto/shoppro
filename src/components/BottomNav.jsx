@@ -24,63 +24,67 @@ export default function BottomNav() {
 
 
   const handleShopClick = async () => {
-    try {
-      const { data: shop, error } = await supabase
+
+  try {
+
+    const user = JSON.parse(
+      localStorage.getItem("user")
+    );
+
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    const { data: shop, error } =
+      await supabase
         .from("shops")
         .select("*")
-        .order("created_at", {
-          ascending: false,
-        })
-        .limit(1)
+        .eq("user_id", user.id)
         .maybeSingle();
 
-      if (error) {
-        console.error(error);
-        navigate("/open-shop");
-        return;
-      }
-
-      // ยังไม่มีร้าน
-      if (!shop) {
-        navigate("/open-shop");
-        return;
-      }
-
-      // รออนุมัติ
-      if (shop.status === "pending") {
-  setPopup({
-    type: "error",
-    title: "แจ้งเตือน",
-    message:
-      "ร้านค้าของคุณรอการตรวจสอบ",
-  });
-  return;
-}
-
-      // ไม่อนุมัติ
-      if (shop.status === "rejected") {
-  setPopup({
-    type: "error",
-    title: "แจ้งเตือน",
-    message:
-      "ร้านค้าของคุณไม่ผ่านการตรวจสอบ กรุณาสมัครใหม่",
-  });
-
-  return;
-}
-
-      // อนุมัติแล้ว
-      if (shop.status === "approved") {
-        navigate("/products");
-        return;
-      }
-
+    if (error) {
+      console.error(error);
       navigate("/open-shop");
-    } catch (err) {
-      console.error(err);
-      navigate("/open-shop");
+      return;
     }
-  };
+
+    if (!shop) {
+      navigate("/open-shop");
+      return;
+    }
+
+    if (shop.status === "pending") {
+      setPopup({
+        type: "error",
+        title: "แจ้งเตือน",
+        message: "ร้านค้าของคุณรอการตรวจสอบ",
+      });
+      return;
+    }
+
+    if (shop.status === "rejected") {
+      setPopup({
+        type: "error",
+        title: "แจ้งเตือน",
+        message:
+          "ร้านค้าของคุณไม่ผ่านการตรวจสอบ กรุณาสมัครใหม่",
+      });
+      return;
+    }
+
+    if (shop.status === "approved") {
+      navigate("/my-shop");
+      return;
+    }
+
+    navigate("/open-shop");
+
+  } catch (err) {
+    console.error(err);
+    navigate("/open-shop");
+  }
+};
 
   return (
     <div className="bottom-nav">

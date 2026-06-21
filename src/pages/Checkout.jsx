@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
 
+
 export default function Checkout() {
+  const navigate = useNavigate();
 const [fullName, setFullName] = useState("");
 const [phone, setPhone] = useState("");
 const [province, setProvince] = useState("");
@@ -284,6 +287,23 @@ color: "#ff3366",
 marginBottom: "20px",
 }}
 >
+
+  <button
+  onClick={() => navigate(-1)}
+  style={{
+    background: "#fff",
+    border: "none",
+    padding: "10px 18px",
+    borderRadius: "12px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    marginBottom: "15px",
+    boxShadow: "0 2px 8px rgba(0,0,0,.1)"
+  }}
+>
+  ← ย้อนกลับ
+</button>
+
 📦 ที่อยู่จัดส่ง </h2>
 
 

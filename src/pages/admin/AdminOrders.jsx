@@ -23,6 +23,7 @@ export default function AdminOrders() {
     const { data } = await supabase
       .from("orders")
       .select("*")
+      .eq("status", "waiting_admin")
       .order("created_at", {
         ascending: false
       });
@@ -30,17 +31,70 @@ export default function AdminOrders() {
     setOrders(data || []);
   }
 
-  async function updateStatus(id, status) {
+  async function updateStatus(order, status) {
+
+  if (status === "completed") {
+
+    const { data: shop } =
+      await supabase
+        .from("shops")
+        .select("user_id")
+        .eq("id", order.shop_id)
+        .single();
+
+    if (!shop) {
+      alert("ไม่พบร้านค้า");
+      return;
+    }
+
+    const { data: wallet } =
+      await supabase
+        .from("wallets")
+        .select("id,balance")
+        .eq("user_id", shop.user_id)
+        .single();
+
+    if (!wallet) {
+      alert("ไม่พบกระเป๋าเงิน");
+      return;
+    }
+
+    const newBalance =
+      Number(wallet.balance || 0) +
+      Number(order.cost_price || 0) +
+      Number(order.profit || 0);
+
+    await supabase
+      .from("wallets")
+      .update({
+        balance: newBalance
+      })
+      .eq("id", wallet.id);
+
+    await supabase
+      .from("orders")
+      .update({
+        status: "completed",
+        owner_paid: true,
+        completed_at: new Date().toISOString()
+      })
+      .eq("id", order.id);
+
+    alert("จ่ายเงินให้ร้านค้าแล้ว");
+
+  } else {
 
     await supabase
       .from("orders")
       .update({
         status
       })
-      .eq("id", id);
+      .eq("id", order.id);
 
-    loadOrders();
   }
+
+  loadOrders();
+}
 
   async function deleteOrder(id) {
 
@@ -222,7 +276,7 @@ export default function AdminOrders() {
             <button
               onClick={() =>
                 updateStatus(
-                  order.id,
+                  order,
                   "paid"
                 )
               }
@@ -243,7 +297,7 @@ export default function AdminOrders() {
             <button
               onClick={() =>
                 updateStatus(
-                  order.id,
+                  order,
                   "shipping"
                 )
               }
@@ -264,7 +318,7 @@ export default function AdminOrders() {
             <button
               onClick={() =>
                 updateStatus(
-                  order.id,
+                  order,
                   "completed"
                 )
               }

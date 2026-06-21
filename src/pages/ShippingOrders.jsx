@@ -60,85 +60,24 @@ export default function ShippingOrders() {
 
   }
 
-  async function completeOrder(order) {
+  async function sendToAdmin(order) {
 
-  console.log("CLICK COMPLETE");
-console.log("ORDER =", order);
-
-alert("STEP 1");
-
-  const { data: shop, error: shopError } =
+  const { error } =
     await supabase
-      .from("shops")
-      .select("user_id")
-      .eq("id", order.shop_id)
-      .single();
+      .from("orders")
+      .update({
+        status: "waiting_admin"
+      })
+      .eq("id", order.id);
 
-  console.log("SHOP =", shop);
-  console.log("SHOP ERROR =", shopError);
+  if (error) {
+    alert(error.message);
+    return;
+  }
 
-  if (!shop) {
-  alert("STEP 2");
-  alert("ไม่พบเจ้าของร้าน");
-  return;
-}
-  const { data: wallet, error: walletError } =
-  await supabase
-    .from("wallets")
-    .select("id,balance")
-    .eq("user_id", shop.user_id)
-    .single();
+  alert("ส่งให้แอดมินตรวจสอบแล้ว");
 
-console.log("WALLET =", wallet);
-console.log("WALLET ERROR =", walletError);
-
-if (!wallet) {
-  alert("STEP 3");
-  alert("ไม่พบกระเป๋าเงินร้านค้า");
-  return;
-}
-const newBalance =
-  Number(wallet.balance || 0) +
-  Number(order.cost_price || 0) +
-  Number(order.profit || 0);
-
-console.log("NEW BALANCE =", newBalance);
-
-alert("STEP 4");
-
-const { error: updateError } =
-  await supabase
-    .from("wallets")
-    .update({
-      balance: newBalance
-    })
-    .eq("id", wallet.id);
-
-console.log("UPDATE ERROR =", updateError);
-
-if (updateError) {
-  alert(updateError.message);
-  return;
-}
-
-  
-
-  const { error: orderUpdateError } =
-  await supabase
-    .from("orders")
-    .update({
-      status: "completed",
-      owner_paid: true,
-      completed_at: new Date().toISOString()
-    })
-    .eq("id", order.id);
-
-console.log(
-  "ORDER UPDATE ERROR =",
-  orderUpdateError
-);
-
-loadOrders();
+  loadOrders();
 }
 
   return (
@@ -285,10 +224,7 @@ loadOrders();
 </div>
 
 <button
-  onClick={() => {
-    alert("BUTTON CLICK");
-    completeOrder(order);
-  }}
+  onClick={() => sendToAdmin(order)}
   style={{
     width: "100%",
     marginTop: 15,
@@ -301,7 +237,7 @@ loadOrders();
     fontWeight: "bold"
   }}
 >
-  ✅ ส่งสินค้าเสร็จสิ้น
+  📦 ส่งให้แอดมินตรวจสอบ
 </button>
 
         </div>

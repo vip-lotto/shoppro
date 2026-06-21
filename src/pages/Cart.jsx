@@ -134,7 +134,7 @@ console.log(data);
 
             <button
               onClick={() =>
-                navigate("/")
+                navigate("/home")
               }
               style={{
                 marginTop: "15px",
