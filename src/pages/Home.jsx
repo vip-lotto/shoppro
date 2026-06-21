@@ -191,12 +191,7 @@ useEffect(() => {
           className="banner-image"
         />
 
-        <div className="banner-overlay">
-          <h2>SHOPPRO</h2>
-          <p>ขายสินค้าออนไลน์</p>
-          <button>Shop Now</button>
-        </div>
-
+       
       </div>
 
       <h2
@@ -249,8 +244,9 @@ useEffect(() => {
 
                 <p
                   style={{
-                    fontSize: "13px",
+                    fontSize: "11px",
                     color: "#666",
+                    margin: "2px 0"
                   }}
                 >
                   🏪 {item.shop_name}
@@ -259,7 +255,8 @@ useEffect(() => {
                 <p
                   style={{
                     color: "#f59e0b",
-                    fontSize: "13px",
+                    fontSize: "11px",
+                    margin: "2px 0"
                   }}
                 >
                   ⭐ {item.shop_star}
@@ -280,7 +277,7 @@ useEffect(() => {
                   onClick={() => addToCart(item)}
                   style={{
                     width: "100%",
-                    marginTop: "10px",
+                    marginTop: "4px",
                     border: "none",
                     background: "#ff3366",
                     color: "#fff",
