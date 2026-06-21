@@ -197,25 +197,7 @@ console.log(data);
               ⭐ {item.shop_star}
             </p>
 
-            <p
-              style={{
-                color: "#666",
-              }}
-            >
-              🎨 สี :
-              {item.color ||
-                " ยังไม่ได้เลือก"}
-            </p>
-
-            <p
-              style={{
-                color: "#666",
-              }}
-            >
-              📏 ไซส์ :
-              {item.size ||
-                " ยังไม่ได้เลือก"}
-            </p>
+            
 
             <p
               style={{

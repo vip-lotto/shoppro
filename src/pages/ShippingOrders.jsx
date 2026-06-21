@@ -7,6 +7,7 @@ export default function ShippingOrders() {
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
+  const [popup, setPopup] = useState(false);
 
   useEffect(() => {
     loadOrders();
@@ -71,13 +72,13 @@ export default function ShippingOrders() {
       .eq("id", order.id);
 
   if (error) {
-    alert(error.message);
-    return;
-  }
+  alert(error.message);
+  return;
+}
 
-  alert("ส่งให้แอดมินตรวจสอบแล้ว");
+setPopup(true);
 
-  loadOrders();
+loadOrders();
 }
 
   return (
@@ -243,6 +244,79 @@ export default function ShippingOrders() {
         </div>
 
       ))}
+
+      {popup && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,.6)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 99999
+    }}
+  >
+    <div
+      style={{
+        width: "90%",
+        maxWidth: "420px",
+        background: "#fff",
+        borderRadius: "25px",
+        padding: "30px",
+        textAlign: "center",
+        boxShadow:
+          "0 15px 40px rgba(0,0,0,.25)"
+      }}
+    >
+      <div
+        style={{
+          fontSize: "70px",
+          marginBottom: "10px"
+        }}
+      >
+        📦
+      </div>
+
+      <h2
+        style={{
+          color: "#22c55e",
+          marginBottom: "10px"
+        }}
+      >
+        ส่งสำเร็จ
+      </h2>
+
+      <p
+        style={{
+          color: "#666",
+          marginBottom: "25px",
+          lineHeight: "28px"
+        }}
+      >
+        ส่งให้แอดมินตรวจสอบแล้ว
+        <br />
+        กรุณารอแอดมินอนุมัติ
+      </p>
+
+      <button
+        onClick={() => setPopup(false)}
+        style={{
+          width: "100%",
+          padding: "15px",
+          border: "none",
+          borderRadius: "15px",
+          background: "#22c55e",
+          color: "#fff",
+          fontWeight: "bold",
+          cursor: "pointer"
+        }}
+      >
+        ตกลง
+      </button>
+    </div>
+  </div>
+)}
 
     </div>
   );

@@ -280,31 +280,37 @@ boxShadow:
 "0 2px 20px rgba(0,0,0,.08)",
 }}
 >
-<h2
-style={{
-textAlign: "center",
-color: "#ff3366",
-marginBottom: "20px",
-}}
->
-
-  <button
-  onClick={() => navigate(-1)}
+<div
   style={{
-    background: "#fff",
-    border: "none",
-    padding: "10px 18px",
-    borderRadius: "12px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    marginBottom: "15px",
-    boxShadow: "0 2px 8px rgba(0,0,0,.1)"
+    position: "relative",
+    marginBottom: 25
   }}
 >
-  ← ย้อนกลับ
-</button>
+  <button
+    onClick={() => navigate(-1)}
+    style={{
+      background: "#fff",
+      border: "none",
+      padding: "12px 20px",
+      borderRadius: 12,
+      cursor: "pointer",
+      fontWeight: "bold",
+      boxShadow: "0 4px 12px rgba(0,0,0,.08)"
+    }}
+  >
+    ← ย้อนกลับ
+  </button>
 
-📦 ที่อยู่จัดส่ง </h2>
+  <h2
+    style={{
+      textAlign: "center",
+      marginTop: -35,
+      color: "#ff3366"
+    }}
+  >
+    📦 ที่อยู่จัดส่ง
+  </h2>
+</div>
 
 
   <input
