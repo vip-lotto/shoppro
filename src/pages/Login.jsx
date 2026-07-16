@@ -18,11 +18,7 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    if (!login || !password) {
-      openPopup("กรุณากรอกข้อมูลให้ครบ");
-      return;
-    }
-
+  try {
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
@@ -30,22 +26,26 @@ export default function Login() {
       .eq("password", password)
       .single();
 
+    console.log("DATA =", data);
+    console.log("ERROR =", error);
+
     if (error || !data) {
       openPopup("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
       return;
     }
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(data)
-    );
-
+    localStorage.setItem("user", JSON.stringify(data));
     openPopup("เข้าสู่ระบบสำเร็จ 🎉");
 
     setTimeout(() => {
-        window.location.replace("/home");
+      window.location.replace("/home");
     }, 1000);
-  };
+
+  } catch (e) {
+    console.error("CATCH =", e);
+    openPopup(String(e));
+  }
+};
 
   return (
     <>
